@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import {
+  useSelector,
+  useDispatch,
+} from 'react-redux';
 import { fetchRockets } from '../redux/rockets/rockets';
 
 const Rockets = () => {
@@ -7,7 +10,7 @@ const Rockets = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (rocketsStatus === 'idle') {
-      dispatch(fetchRockets());
+      fetchRockets(dispatch);
     }
   }, []);
 

@@ -1,39 +1,58 @@
-// The only solution here is to disable eslint
-/* eslint-disable no-param-reassign */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+const FETCH_ROCKETS_BEGIN = 'rocket-space-missions/rockets/FETCH_ROCKETS_BEGIN';
+const FETCH_ROCKETS_FULFILLED = 'rocket-space-missions/rockets/FETCH_ROCKETS_FULFILLED';
+const FETCH_ROCKETS_REJECTED = 'rocket-space-missions/rockets/FETCH_ROCKETS_REJECTED';
 
-export const fetchRockets = createAsyncThunk(
-  'rocket-space-missions/rockets/fetchRockets', () => {
-    const response = fetch('https://api.spacexdata.com/v3/rockets')
-      .then((response) => response.json())
-      .then((data) => data.map((item) => ({
+const fetchRocketsBegin = () => ({
+  type: FETCH_ROCKETS_BEGIN,
+  payload: { loading: 'idle' },
+});
+
+const fetchRocketsFulfilled = (payload) => ({
+  type: FETCH_ROCKETS_FULFILLED,
+  payload,
+});
+
+const fetchRocketsRejected = (payload) => ({
+  type: FETCH_ROCKETS_REJECTED,
+  payload,
+});
+
+export const fetchRockets = (dispatch) => {
+  dispatch(fetchRocketsBegin());
+  fetch('https://api.spacexdata.com/v3/rockets')
+    .then((response) => response.json())
+    .then((data) => {
+      const rocketDetails = data.map((item) => ({
         id: item.id,
         rocket_name: item.rocket_name,
         description: item.description,
         flickr_images: item.flickr_images,
-      })));
-    return response;
-  },
-);
+      }));
+      dispatch(fetchRocketsFulfilled(rocketDetails));
+    }).catch((error) => {
+      const errorMessage = error.message;
+      dispatch(fetchRocketsRejected(errorMessage));
+    });
+};
 
-const rocketsSlice = createSlice({
-  name: 'rockets',
-  initialState: { rockets: [], loading: 'idle' },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchRockets.pending, (state) => {
-      state.loading = 'pending';
-    });
-    builder.addCase(fetchRockets.fulfilled, (state, action) => {
-      state.rockets.push(action.payload);
-      state.loading = 'idle';
-    });
-    builder.addCase(fetchRockets.rejected, (state) => {
-      state.loading = 'rejected';
-    });
-  },
-});
+const initialState = {
+  rockets: '',
+  loading: 'idle',
+};
+
+const rocketsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case FETCH_ROCKETS_BEGIN:
+      return { ...state, loading: 'pending' };
+    case FETCH_ROCKETS_FULFILLED:
+      return { ...state, rockets: action.payload, loading: 'idle' };
+    case FETCH_ROCKETS_REJECTED:
+      return { ...state, rockets: action.payload, loading: 'idle' };
+    default:
+      return state;
+  }
+};
 
 export const getAllRockets = (state) => state;
 
-export default rocketsSlice.reducer;
+export default rocketsReducer;
