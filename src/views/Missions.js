@@ -1,33 +1,53 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveMissions } from '../redux/missions/missions';
+import { Table, Badge, Button } from 'react-bootstrap';
+import { getMissions } from '../redux/missions/missions';
+import './missions.css';
 
 const Missions = () => {
   const list = useSelector(({ missionsReducer }) => missionsReducer);
   const dispatch = useDispatch();
 
-  const getMissions = async () => {
-    const resp = await fetch('https://api.spacexdata.com/v3/missions');
-    const data = await resp.json();
-
-    const missions = data.map((m) => ({
-      mission_id: m.mission_id,
-      mission_name: m.mission_name,
-      description: m.description,
-    }));
-
-    dispatch(saveMissions(missions));
-  };
-
   useEffect(() => {
     if (!list.length) {
-      getMissions();
+      dispatch(getMissions());
     }
   }, []);
 
   return (
     <section className="missions">
-      <p>this is the missions page</p>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Mission</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th> </th>
+          </tr>
+        </thead>
+        <tbody>
+          {list.map((m) => (
+            <tr key={m.mission_id}>
+              <td className="name">{m.mission_name}</td>
+              <td>{m.description}</td>
+              <td className="status">
+                {m.member ? (
+                  <Badge bg="primary">Active Member</Badge>
+                ) : (
+                  <Badge bg="secondary">NOT A MEMBER</Badge>
+                )}
+              </td>
+              <td className="actions">
+                {m.member ? (
+                  <Button variant="outline-danger">Leave Mission</Button>
+                ) : (
+                  <Button variant="outline-secondary">Join Mission</Button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </section>
   );
 };
