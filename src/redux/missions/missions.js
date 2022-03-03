@@ -1,5 +1,6 @@
 const SAVE_MISSIONS = 'missionsStore/SAVE_MISSIONS';
 const JOIN_MISSION = 'missionsStore/JOIN_MISSION';
+const LEAVE_MISSION = 'missionsStore/LEAVE_MISSION';
 
 export const saveMissions = (payload) => ({
   type: SAVE_MISSIONS,
@@ -8,6 +9,11 @@ export const saveMissions = (payload) => ({
 
 export const joinMission = (payload) => ({
   type: JOIN_MISSION,
+  payload,
+});
+
+export const leaveMission = (payload) => ({
+  type: LEAVE_MISSION,
   payload,
 });
 
@@ -33,6 +39,13 @@ const reducer = (state = initialState, action) => {
       return state.map((mission) => {
         if (mission.mission_id === action.payload) {
           return { ...mission, reserved: true };
+        }
+        return mission;
+      });
+    case LEAVE_MISSION:
+      return state.map((mission) => {
+        if (mission.mission_id === action.payload) {
+          return { ...mission, reserved: false };
         }
         return mission;
       });
