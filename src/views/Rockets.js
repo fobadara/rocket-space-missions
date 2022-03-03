@@ -1,6 +1,24 @@
-const Rockets = () => (
-  <section className="rockets">
-    <p>this is the rockets page</p>
-  </section>
-);
+import { useEffect } from 'react';
+import {
+  useSelector,
+  useDispatch,
+} from 'react-redux';
+import { fetchRockets } from '../redux/rockets/rockets';
+
+const Rockets = () => {
+  const rocketsStatus = useSelector((state) => state.rocketsReducer.loading);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (rocketsStatus === 'idle') {
+      fetchRockets(dispatch);
+    }
+  }, []);
+
+  return (
+    <section className="rockets">
+      <p>this is the rockets page</p>
+    </section>
+  );
+};
+
 export default Rockets;
