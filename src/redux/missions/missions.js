@@ -1,5 +1,6 @@
 const SAVE_MISSIONS = 'missionsStore/SAVE_MISSIONS';
 const JOIN_MISSION = 'missionsStore/JOIN_MISSION';
+const LEAVE_MISSION = 'missionsStore/LEAVE_MISSION';
 
 export const saveMissions = (payload) => ({
   type: SAVE_MISSIONS,
@@ -11,17 +12,23 @@ export const joinMission = (payload) => ({
   payload,
 });
 
-export const getMissions = () => (dispatch) => fetch('https://api.spacexdata.com/v3/missions')
-  .then((response) => response.json())
-  .then((data) => {
-    const missions = data.map((m) => ({
-      mission_id: m.mission_id,
-      mission_name: m.mission_name,
-      description: m.description,
-    }));
+export const leaveMission = (payload) => ({
+  type: LEAVE_MISSION,
+  payload,
+});
 
-    dispatch(saveMissions(missions));
-  });
+export const getMissions = () => (dispatch) =>
+  fetch('https://api.spacexdata.com/v3/missions')
+    .then((response) => response.json())
+    .then((data) => {
+      const missions = data.map((m) => ({
+        mission_id: m.mission_id,
+        mission_name: m.mission_name,
+        description: m.description,
+      }));
+
+      dispatch(saveMissions(missions));
+    });
 
 const initialState = [];
 
@@ -33,6 +40,13 @@ const reducer = (state = initialState, action) => {
       return state.map((mission) => {
         if (mission.mission_id === action.payload) {
           return { ...mission, reserved: true };
+        }
+        return mission;
+      });
+    case LEAVE_MISSION:
+      return state.map((mission) => {
+        if (mission.mission_id === action.payload) {
+          return { ...mission, reserved: false };
         }
         return mission;
       });
