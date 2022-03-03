@@ -30,36 +30,40 @@ const Missions = () => {
           </tr>
         </thead>
         <tbody>
-          {list.map((m) => (
-            <tr key={m.mission_id}>
-              <td className="name">{m.mission_name}</td>
-              <td>{m.description}</td>
-              <td className="status">
-                {m.reserved ? (
-                  <Badge bg="primary">Active Member</Badge>
-                ) : (
-                  <Badge bg="secondary">NOT A MEMBER</Badge>
-                )}
-              </td>
-              <td className="actions">
-                {m.reserved ? (
-                  <Button
-                    variant="outline-danger"
-                    onClick={() => dispatch(leaveMission(m.mission_id))}
-                  >
-                    Leave Mission
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outline-secondary"
-                    onClick={() => dispatch(joinMission(m.mission_id))}
-                  >
-                    Join Mission
-                  </Button>
-                )}
-              </td>
-            </tr>
-          ))}
+          {list.map(
+            ({
+              mission_id: id, mission_name: name, description, reserved,
+            }) => (
+              <tr key={id}>
+                <td className="name">{name}</td>
+                <td>{description}</td>
+                <td className="status">
+                  {reserved ? (
+                    <Badge bg="primary">Active Member</Badge>
+                  ) : (
+                    <Badge bg="secondary">NOT A MEMBER</Badge>
+                  )}
+                </td>
+                <td className="actions">
+                  {reserved ? (
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => dispatch(leaveMission(id))}
+                    >
+                      Leave Mission
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline-secondary"
+                      onClick={() => dispatch(joinMission(id))}
+                    >
+                      Join Mission
+                    </Button>
+                  )}
+                </td>
+              </tr>
+            ),
+          )}
         </tbody>
       </Table>
     </section>
