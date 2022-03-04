@@ -3,6 +3,14 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
+  position: relative;
+}
+
+.profile p {
+  position: absolute;
+  top: 38vh;
+  width: 100%;
+  text-align: center;
 }
 
 @media (max-width: 600px) {

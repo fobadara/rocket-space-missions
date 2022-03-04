@@ -1,42 +1,52 @@
 import { useSelector } from 'react-redux';
-import { Table, Row, Col } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import './profile.css';
 
 const Profile = () => {
-  const list = useSelector(({ missionsReducer }) => missionsReducer);
-  const rockets = useSelector(({ rocketsReducer }) => rocketsReducer.rockets);
+  const missions = useSelector(({ missionsReducer }) => missionsReducer).filter(
+    (m) => m.reserved,
+  );
+  const rockets = useSelector(
+    ({ rocketsReducer }) => rocketsReducer.rockets,
+  ).filter((r) => r.reserved);
   return (
     <section className="profile">
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>My Missions</th>
-            <th>My profile</th>
-          </tr>
-        </thead>
-        <tbody>
-          <Row>
-            <Col>
-              {list
-                .filter((m) => m.reserved)
-                .map(({ mission_id: id, mission_name: name }) => (
-                  <tr key={id}>
-                    <td className="name">{name}</td>
-                  </tr>
-                ))}
-            </Col>
-            <Col>
-              {rockets
-                .filter((rocket) => rocket.reserved)
-                .map(({ id, name }) => (
-                  <tr key={id}>
-                    <td className="name">{name}</td>
-                  </tr>
-                ))}
-            </Col>
-          </Row>
-        </tbody>
-      </Table>
+      {!missions.length && !rockets.length && (
+        <p>no missions joined or no rockets reserved</p>
+      )}
+
+      {missions.length > 0 && (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>My Missions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {missions.map(({ mission_id: id, mission_name: name }) => (
+              <tr key={id}>
+                <td className="name">{name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
+      {rockets.length > 0 && (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>My Rockets</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rockets.map(({ id, rocket_name: name }) => (
+              <tr key={id}>
+                <td className="name">{name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </section>
   );
 };

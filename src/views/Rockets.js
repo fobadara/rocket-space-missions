@@ -27,6 +27,7 @@ const Rockets = () => {
         name={rocket.rocket_name}
         image={rocket.flickr_images[0]}
         description={rocket.description}
+        reserved={rocket.reserved}
         id={rocket.id}
       />
     ));
@@ -40,15 +41,12 @@ const Rockets = () => {
       {loading === 'rejected' && (
         <Alert variant="warning">
           Error:
-          {' '}
           {errorMessage}
         </Alert>
       )}
       <Container>
         <CardGroup>
-          <Row>
-            {rocketsList}
-          </Row>
+          <Row>{rocketsList}</Row>
         </CardGroup>
       </Container>
     </section>

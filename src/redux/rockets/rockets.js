@@ -36,7 +36,8 @@ export const fetchRockets = (dispatch) => {
         reserved: false,
       }));
       dispatch(fetchRocketsFulfilled(rocketDetails));
-    }).catch((error) => {
+    })
+    .catch((error) => {
       const errorMessage = error.message;
       dispatch(fetchRocketsRejected(errorMessage));
     });
@@ -48,17 +49,6 @@ const initialState = {
 };
 
 const rocketsReducer = (state = initialState, action) => {
-  let rockets;
-  if (state.rockets.length) {
-    rockets = state.rockets.map((rocket) => {
-      if (rocket.id === action.payload.id) {
-        return {
-          ...rocket, reserved: action.payload.reserved,
-        };
-      }
-      return rocket;
-    });
-  }
   switch (action.type) {
     case FETCH_ROCKETS_BEGIN:
       return { ...state, loading: 'pending' };
@@ -67,7 +57,18 @@ const rocketsReducer = (state = initialState, action) => {
     case FETCH_ROCKETS_REJECTED:
       return { ...state, rockets: action.payload, loading: 'rejected' };
     case UPDATE_BOOKING_STATUS:
-      return { ...state, rockets };
+      return {
+        ...state,
+        rockets: state.rockets.map((rocket) => {
+          if (rocket.id === action.payload.id) {
+            return {
+              ...rocket,
+              reserved: action.payload.reserved,
+            };
+          }
+          return rocket;
+        }),
+      };
     default:
       return state;
   }

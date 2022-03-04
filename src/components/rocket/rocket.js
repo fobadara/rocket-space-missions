@@ -4,24 +4,19 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { updateBookingStatus } from '../../redux/rockets/rockets';
 
 const Rocket = (props) => {
   const {
-    image, name, description, id,
+    image, name, description, id, reserved,
   } = props;
 
   const dispatch = useDispatch();
 
-  const reservedStatus = useSelector(({ rocketsReducer }) => rocketsReducer.reserved);
-  const [reserved, setReserved] = useState(reservedStatus);
-
   const handleClick = () => {
-    setReserved(!(reserved));
-    dispatch(updateBookingStatus({ id, reserved: !(reserved) }));
+    dispatch(updateBookingStatus({ id, reserved: !reserved }));
   };
   return (
     <Col className="mt-4" sm={12} md={6} lg={12}>
@@ -34,7 +29,11 @@ const Rocket = (props) => {
             <Card.Body className="pt-2 pt-lg-2">
               <Card.Title>{name}</Card.Title>
               <Card.Text>
-                {reserved && <Badge className="me-2" pill bg="primary">Reserved</Badge>}
+                {reserved && (
+                  <Badge className="me-2" pill bg="primary">
+                    Reserved
+                  </Badge>
+                )}
                 {description}
               </Card.Text>
               <Button
@@ -57,6 +56,7 @@ Rocket.propTypes = {
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
+  reserved: PropTypes.bool.isRequired,
 };
 
 export default Rocket;
