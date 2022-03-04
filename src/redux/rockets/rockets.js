@@ -36,7 +36,7 @@ export const fetchRockets = (dispatch) => {
 };
 
 const initialState = {
-  rockets: '',
+  rockets: {},
   loading: 'idle',
 };
 
