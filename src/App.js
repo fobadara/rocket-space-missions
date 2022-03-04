@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Header from './components/header';
 import Profile from './views/Profile';
@@ -9,14 +9,14 @@ import Missions from './views/Missions';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <Router>
         <Header />
         <Routes>
           <Route path="/" element={<Rockets />} />
           <Route path="/missions" element={<Missions />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }
