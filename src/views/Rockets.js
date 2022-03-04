@@ -23,10 +23,11 @@ const Rockets = () => {
   if (rockets.length && typeof rockets !== 'string') {
     rocketsList = rockets.map((rocket) => (
       <Rocket
-        key={rockets.id}
+        key={rocket.id}
         name={rocket.rocket_name}
         image={rocket.flickr_images[0]}
         description={rocket.description}
+        id={rocket.id}
       />
     ));
   } else if (typeof rockets === 'string') {
@@ -37,11 +38,11 @@ const Rockets = () => {
     <section className="rockets mb-4">
       {loading === 'pending' && <Alert variant="info">Loading...</Alert>}
       {loading === 'rejected' && (
-      <Alert variant="warning">
-        Error:
-        {' '}
-        {errorMessage}
-      </Alert>
+        <Alert variant="warning">
+          Error:
+          {' '}
+          {errorMessage}
+        </Alert>
       )}
       <Container>
         <CardGroup>
