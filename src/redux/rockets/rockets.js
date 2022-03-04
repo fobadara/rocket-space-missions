@@ -47,7 +47,7 @@ const rocketsReducer = (state = initialState, action) => {
     case FETCH_ROCKETS_FULFILLED:
       return { ...state, rockets: action.payload, loading: 'idle' };
     case FETCH_ROCKETS_REJECTED:
-      return { ...state, rockets: action.payload, loading: 'idle' };
+      return { ...state, rockets: action.payload, loading: 'rejected' };
     default:
       return state;
   }

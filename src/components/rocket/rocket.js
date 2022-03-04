@@ -16,7 +16,7 @@ const Rocket = (props) => {
             <Card.Img variant="top" src={image} />
           </Col>
           <Col lg={8}>
-            <Card.Body className="pt-0">
+            <Card.Body className="pt-2 pt-lg-2">
               <Card.Title>{name}</Card.Title>
               <Card.Text>{description}</Card.Text>
             </Card.Body>

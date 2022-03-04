@@ -12,7 +12,6 @@ const Rockets = () => {
   const reducer = useSelector(({ rocketsReducer }) => rocketsReducer);
   const { rockets, loading } = reducer;
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (loading === 'idle') {
       fetchRockets(dispatch);
@@ -20,7 +19,8 @@ const Rockets = () => {
   }, []);
 
   let rocketsList;
-  if (rockets.length) {
+  let errorMessage;
+  if (rockets.length && typeof rockets !== 'string') {
     rocketsList = rockets.map((rocket) => (
       <Rocket
         key={rockets.id}
@@ -29,11 +29,20 @@ const Rockets = () => {
         description={rocket.description}
       />
     ));
+  } else if (typeof rockets === 'string') {
+    errorMessage = rockets;
   }
 
   return (
     <section className="rockets mb-4">
       {loading === 'pending' && <Alert variant="info">Loading...</Alert>}
+      {loading === 'rejected' && (
+      <Alert variant="warning">
+        Error:
+        {' '}
+        {errorMessage}
+      </Alert>
+      )}
       <Container>
         <CardGroup>
           <Row>
