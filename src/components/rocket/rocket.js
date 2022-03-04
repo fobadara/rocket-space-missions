@@ -23,7 +23,6 @@ const Rocket = (props) => {
     setReserved(!(reserved));
     dispatch(updateBookingStatus({ id, reserved: !(reserved) }));
   };
-
   return (
     <Col className="mt-4" sm={12} md={6} lg={12}>
       <Card className="border-0">

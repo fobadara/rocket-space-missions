@@ -13,7 +13,7 @@ const Rockets = () => {
   const { rockets, loading } = reducer;
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!rockets.length) {
+    if (loading === 'idle' && !rockets.length) {
       fetchRockets(dispatch);
     }
   }, []);
