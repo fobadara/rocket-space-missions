@@ -3,6 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 
@@ -19,8 +20,8 @@ const Rocket = (props) => {
   const [reserved, setReserved] = useState(reservedStatus);
 
   const handleClick = () => {
-    setReserved(!reserved);
-    dispatch(updateBookingStatus({ id, reserved }));
+    setReserved(!(reserved));
+    dispatch(updateBookingStatus({ id, reserved: !(reserved) }));
   };
 
   return (
@@ -33,7 +34,10 @@ const Rocket = (props) => {
           <Col lg={8}>
             <Card.Body className="pt-2 pt-lg-2">
               <Card.Title>{name}</Card.Title>
-              <Card.Text>{description}</Card.Text>
+              <Card.Text>
+                {reserved && <Badge className="me-2" pill bg="primary">Reserved</Badge>}
+                {description}
+              </Card.Text>
               <Button
                 key={name}
                 variant={!reserved ? 'primary' : 'outline-secondary'}
