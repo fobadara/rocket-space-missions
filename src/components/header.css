@@ -1,0 +1,15 @@
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.links {
+  display: flex;
+  gap: 1rem;
+  color: blue;
+}
+
+.links .active {
+  text-decoration: underline !important;
+}
