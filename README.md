@@ -12,9 +12,11 @@ The Missions section displays a list of current missions along with their brief 
 
 > My Profile
 
-The My Profile section displays all reserved rockets and space missions.
+The 'My Profile section' displays all reserved rockets and space missions.
 
 ![screenshot](./screenshot.gif)
+
+## [Live Demo](https://rockets-space-mission.netlify.app/)
 
 ## Built With
 
